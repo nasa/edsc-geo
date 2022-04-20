@@ -1,0 +1,42 @@
+{
+  "name": "@edsc/geo-utils",
+  "version": "1.0.0",
+  "description": "Geographical utilities used by Earthdata Search",
+  "main": "./dist/js/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "silent-test": "jest --silent",
+    "build": "babel src -d dist --ignore '**/*.test.js'",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nasa/edsc-geo.git"
+  },
+  "keywords": [
+    "edsc"
+  ],
+  "author": {
+    "name": "Patrick Quinn",
+    "email": "patrick@element84.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/nasa/edsc-geo/issues"
+  },
+  "homepage": "https://github.com/nasa/edsc-geo#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
+    "babel-jest": "^27.5.1",
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.1.4",
+    "jest": "^27.5.1",
+    "jsdom": "^19.0.0"
+  }
+}
