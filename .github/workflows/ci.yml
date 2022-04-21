@@ -38,7 +38,7 @@ jobs:
     - name: Upload coverage to codecov
       uses: codecov/codecov-action@v1
   deploy:
-    if: success() && github.ref == 'refs/heads/main' # only run on main success
+    if: success() && github.ref == 'refs/heads/master' # only run on master success
     needs: [jest] # only run after jest jobs complete
     runs-on: ubuntu-latest
     steps:
