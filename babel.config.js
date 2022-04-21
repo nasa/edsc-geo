@@ -11,7 +11,4 @@ module.exports = {
     ]
   ],
   sourceType: 'unambiguous'
-  // ignore: [
-  //   '**/*.test.js'
-  // ]
 }
