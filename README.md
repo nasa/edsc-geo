@@ -1,6 +1,6 @@
 # Earthdata Search Components: Geo Utils
 
-[![npm version](https://badge.fury.io/js/%40edsc%2Fechoforms.svg)](https://badge.fury.io/js/%40edsc%2Fgeo-utils)
+[![npm version](https://badge.fury.io/js/%40edsc%2Fgeo-utils.svg)](https://badge.fury.io/js/%40edsc%2Fgeo-utils)
 ![Build Status](https://github.com/nasa/edsc-geo/workflows/CI/badge.svg?branch=master)
 [![codecov](https://codecov.io/gh/nasa/edsc-geo/branch/master/graph/badge.svg?token=4d8wFDtAc0)](https://codecov.io/gh/nasa/edsc-geo)
 
