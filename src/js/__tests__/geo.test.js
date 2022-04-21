@@ -1,8 +1,64 @@
 import {
   calculateArea,
+  dividePolygon,
   getShape,
   splitListOfPoints
 } from '../geo'
+
+describe('geo#dividePolygon', () => {
+  test('returns the boundaries and interiors of the polygon', () => {
+    const polygon = [
+      {
+        lat: -89.9875,
+        lng: -28.5905947
+      },
+      {
+        lat: -86.8125,
+        lng: 180
+      },
+      {
+        lat: -80.0041667,
+        lng: 57.6111881
+      },
+      {
+        lat: -80.0041667,
+        lng: -0.0239638
+      },
+      {
+        lat: -89.9875,
+        lng: -28.5905947
+      }
+    ]
+
+    expect(dividePolygon(polygon)).toEqual({
+      boundaries: [
+        [
+          { lat: -86.8125, lng: 180 },
+          { lat: -80.0041667, lng: 57.6111881 },
+          { lat: -80.0041667, lng: -0.0239638 },
+          { lat: -89.9875, lng: -28.5905947 },
+          { lat: -89.9875, lng: -28.5905947 },
+          { lat: -86.8125, lng: -180 }
+        ]
+      ],
+      interiors: [
+        [
+          { lat: -86.8125, lng: 180 },
+          { lat: -80.0041667, lng: 57.6111881 },
+          { lat: -80.0041667, lng: -0.0239638 },
+          { lat: -89.9875, lng: -28.5905947 },
+          { lat: -89.9875, lng: -28.5905947 },
+          { lat: -86.8125, lng: -180 },
+          { lat: -90, lng: -180 },
+          { lat: -90, lng: -90 },
+          { lat: -90, lng: 0 },
+          { lat: -90, lng: 90 },
+          { lat: -90, lng: 180 }
+        ]
+      ]
+    })
+  })
+})
 
 describe('geo#calculateArea', () => {
   const lls = (latlngs) => Array.from(latlngs).map((ll) => {

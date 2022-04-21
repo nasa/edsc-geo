@@ -482,7 +482,7 @@ export const dividePolygon = (latlngs) => {
     // eslint-disable-next-line no-loop-func
     extras.forEach((extra) => {
       [lat, lng] = Array.from(extra)
-      split.push(latLng(lat, lng))
+      split.push(latLng([lat, lng]))
       maxCrossingLat = Math.max(lat, maxCrossingLat)
       minCrossingLat = Math.min(lat, minCrossingLat)
     })
@@ -536,7 +536,7 @@ export const dividePolygon = (latlngs) => {
         // We need a few points along the top of the map or polar projections screw up
         inc = lng < 0 ? 90 : -90
         for (i = 0; i <= 4; i += 1) {
-          interior.push(latLng(90, lng + (i * inc)))
+          interior.push(latLng([90, lng + (i * inc)]))
         }
       }
 
@@ -548,7 +548,7 @@ export const dividePolygon = (latlngs) => {
         } = latlng)
         inc = lng < 0 ? 90 : -90
         for (i = 0; i <= 4; i += 1) {
-          interior.push(latLng(-90, lng + (i * inc)))
+          interior.push(latLng([-90, lng + (i * inc)]))
         }
       }
 
@@ -587,10 +587,10 @@ export const dividePolygon = (latlngs) => {
   if (containsNorthPole && containsSouthPole && !hasInsertions) {
     interior = []
     for (i = 0; i <= 4; i += 1) {
-      interior.push(latLng(90, -180 + (i * 90)))
+      interior.push(latLng([90, -180 + (i * 90)]))
     }
     for (i = 0; i <= 4; i += 1) {
-      interior.push(latLng(-90, 180 - (i * 90)))
+      interior.push(latLng([-90, 180 - (i * 90)]))
     }
     interiors.unshift(interior)
   }
