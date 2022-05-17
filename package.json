@@ -1,6 +1,6 @@
 {
   "name": "@edsc/geo-utils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Geographical utilities used by Earthdata Search",
   "main": "./dist/js/index.js",
   "scripts": {
