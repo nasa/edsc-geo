@@ -8,3 +8,10 @@ src
 tmp
 .github/workflows/ci.yml
 .snyk
+bin
+report.json
+source.tgz
+cloc.log
+.github
+.codecov.yml
+.eslintrc.json
