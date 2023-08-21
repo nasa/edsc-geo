@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-          node-version: ['lts/hydrogen', 'lts/iron']
+          node-version: ['lts/hydrogen', 20]
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
