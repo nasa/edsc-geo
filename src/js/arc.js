@@ -19,6 +19,7 @@ export class Arc {
       this.coordA = newCoordA
       this.coordB = newCoordB
     }
+
     this.normal = this.coordA.cross(this.coordB)
   }
 
@@ -37,9 +38,11 @@ export class Arc {
     if (this.coversLongitude(northInflectionLon)) {
       return Coordinate.fromLatLng(northInflectionLat, northInflectionLon)
     }
+
     if (this.coversLongitude(southInflectionLon)) {
       return Coordinate.fromLatLng(southInflectionLat, southInflectionLon)
     }
+
     return null
   }
 
@@ -50,6 +53,7 @@ export class Arc {
     if (Math.abs(thetaMax - thetaMin) < Math.PI) {
       return thetaMin < theta && theta < thetaMax
     }
+
     return (theta > thetaMax) || (theta < thetaMin)
   }
 
@@ -77,7 +81,7 @@ export class Arc {
     }
 
     const xN = this.normal.x
-    // const yN = this.normal.y
+    // `const yN = this.normal.y`
     const zN = this.normal.z
 
     // We have two vectors and a normal vector.  We need to find a third

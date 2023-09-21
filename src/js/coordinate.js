@@ -14,6 +14,7 @@ export class Coordinate {
     } else {
       [lat, lng] = Array.from(args)
     }
+
     return Coordinate.fromPhiTheta(lat * DEG_TO_RAD, lng * DEG_TO_RAD)
   }
 
@@ -26,18 +27,21 @@ export class Coordinate {
 
     // Normalize phi to the interval [-PI / 2, PI / 2]
     while (newPhi >= PI) { newPhi -= 2 * PI }
+
     while (newPhi < PI) { newPhi += 2 * PI }
 
     if (newPhi > (PI / 2)) {
       newPhi = PI - newPhi
       newTheta += PI
     }
+
     if (newPhi < (-PI / 2)) {
       newPhi = -PI - newPhi
       newTheta += PI
     }
 
     while (newTheta >= PI) { newTheta -= 2 * PI }
+
     while (newTheta < -PI) { newTheta += 2 * PI }
 
     // Maintain the same sign as the original when theta is +/- PI
@@ -96,6 +100,7 @@ export class Coordinate {
     const x = (this.y * other.z) - (this.z * other.y)
     const y = (this.z * other.x) - (this.x * other.z)
     const z = (this.x * other.y) - (this.y * other.x)
+
     return Coordinate.fromXYZ(x, y, z)
   }
 
@@ -108,11 +113,15 @@ export class Coordinate {
     const lat = RAD_TO_DEG * this.phi
     const lng = RAD_TO_DEG * this.theta
 
-    return { lat, lng }
+    return {
+      lat,
+      lng
+    }
   }
 
   toString() {
     const latlng = this.toLatLng()
+
     return `(${latlng.lat.toFixed(3)}, ${latlng.lng.toFixed(3)})`
   }
 
