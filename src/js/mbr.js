@@ -1,12 +1,17 @@
 import { Arc } from './arc'
 import { Coordinate } from './coordinate'
-import { dividePolygon, splitListOfPoints, getShape } from './geo'
+import {
+  dividePolygon,
+  splitListOfPoints,
+  getShape
+} from './geo'
 
 const circularMax = (lng0, lng1) => {
   const [left, right] = Array.from(lng0 < lng1 ? [lng0, lng1] : [lng1, lng0])
   if ((right - left) < 180) {
     return right
   }
+
   return left
 }
 
@@ -14,6 +19,7 @@ const circularMin = (lng0, lng1) => {
   if (circularMax(lng0, lng1) === lng1) {
     return lng0
   }
+
   return lng1
 }
 
@@ -72,14 +78,18 @@ const distance = (lng0, min, max) => {
 
   newMin += 720
   while (newMax < newMin) { newMax += 360 }
+
   const mid = newMin + ((newMax - newMin) / 2)
   while (newLng0 < (mid - 180)) { newLng0 += 360 }
 
   if (newLng0 < newMin) {
     return newMin - newLng0
-  } if (newLng0 > newMax) {
+  }
+
+  if (newLng0 > newMax) {
     return newLng0 - newMax
   }
+
   return 0
 }
 
@@ -142,7 +152,9 @@ export const divideMbr = (mbr) => {
       [minLat, -180, maxLat, maxLng],
       [minLat, minLng, maxLat, 180]
     ]
-  } if (minLng === maxLng) {
+  }
+
+  if (minLng === maxLng) {
     return [[minLat, -180, maxLat, 180]]
   }
 
@@ -177,6 +189,7 @@ export const mbr = (spatial) => {
 
   if (point) {
     const { lat, lng } = getShape([point])[0]
+
     return {
       swLat: lat - EPSILON,
       swLng: lng - EPSILON,
@@ -211,6 +224,7 @@ export const mbr = (spatial) => {
   if (boundingBox) {
     const points = splitListOfPoints(boundingBox)
     const [sw, ne] = getShape(points)
+
     return {
       swLat: sw.lat,
       swLng: sw.lng,
@@ -225,6 +239,7 @@ export const mbr = (spatial) => {
 
     const { interiors } = dividePolygon(getShape(points))
     const mbrs = (interiors.map((lls) => findSimpleMbr(lls)))
+
     return mergeMbrs(mbrs)
   }
 

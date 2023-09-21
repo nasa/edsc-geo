@@ -4,7 +4,10 @@ import { Coordinate } from './coordinate'
 const latLng = (a) => {
   if (a.constructor === Array) {
     if (a.length === 2) {
-      return { lat: +a[0], lng: +a[1] }
+      return {
+        lat: +a[0],
+        lng: +a[1]
+      }
     }
 
     return null
@@ -87,9 +90,6 @@ const course = (latlng1, latlng2) => {
     PI
   } = Math
 
-  // const c1 = Coordinate.fromLatLng(latlng1)
-  // const c2 = Coordinate.fromLatLng(latlng1)
-
   const lat1 = latlng1.lat * DEG_TO_RAD
   const lng1 = latlng1.lng * DEG_TO_RAD
 
@@ -99,6 +99,7 @@ const course = (latlng1, latlng2) => {
   if (lat1 > ((PI / 2) - EPSILON)) {
     return PI
   }
+
   if (lat1 < ((-PI / 2) + EPSILON)) {
     return 2 * PI
   }
@@ -126,9 +127,12 @@ const angleDelta = (a1, a2) => {
 
   if (leftTurnAmount === 180) {
     return 0
-  } if (leftTurnAmount > 180) {
+  }
+
+  if (leftTurnAmount > 180) {
     return leftTurnAmount - 360
   }
+
   return leftTurnAmount
 }
 
@@ -165,8 +169,10 @@ const containsPole = (latlngs) => {
   newLatLngs = ((() => {
     const result = []
     newLatLngs.forEach((latlng) => result.push(latLng(latlng)))
+
     return result
   })())
+
   newLatLngs.push(newLatLngs[1])
 
   let delta = 0
@@ -182,14 +188,18 @@ const containsPole = (latlngs) => {
 
     let delta0 = initial - prev
     if (delta0 > Math.PI) { delta0 -= 2 * Math.PI }
+
     if (delta0 < -Math.PI) { delta0 += 2 * Math.PI }
+
     if (Math.abs(Math.PI - Math.abs(delta0)) < EPSILON) {
       delta0 = 0
     }
 
     let delta1 = final - initial
     if (delta1 > Math.PI) { delta1 -= 2 * Math.PI }
+
     if (delta1 < -Math.PI) { delta1 += 2 * Math.PI }
+
     if (Math.abs(Math.PI - Math.abs(delta1)) < EPSILON) {
       delta1 = 0
     }
@@ -197,7 +207,7 @@ const containsPole = (latlngs) => {
     delta += delta0 + delta1
   }
 
-  // clean up the added point after calculating 'delta'
+  // Clean up the added point after calculating 'delta'
   newLatLngs.pop()
 
   delta *= RAD_TO_DEG
@@ -205,24 +215,28 @@ const containsPole = (latlngs) => {
   if (delta < (-360 + EPSILON)) {
     // eslint-disable-next-line no-bitwise
     return NORTH_POLE | SOUTH_POLE
-  } if (delta < EPSILON) {
+  }
+
+  if (delta < EPSILON) {
     const angles = ((() => {
       const result1 = []
       newLatLngs.forEach((latlng) => result1.push(latlng.lng))
+
       return result1
     })())
     const dir = rotationDirection(angles)
 
     if (dir > 0) {
       return NORTH_POLE
-    } if (dir < 0) {
+    }
+
+    if (dir < 0) {
       return SOUTH_POLE
     }
-    // if (config.debug) {
-    //   console.warn('Rotation direction is NONE despite containing a pole')
-    // }
+
     return 0
   }
+
   return 0
 }
 
@@ -293,6 +307,7 @@ export const calculateArea = (origLatlngs) => {
         thetaC += 2 * PI
       }
     }
+
     sum += (thetaC - thetaA) * Math.sin(phiB)
   }
 
@@ -321,13 +336,19 @@ const convertLatLngs = (latlngs) => {
         lng
       } = original)
     }
+
     while (lng > 180) {
       lng -= 360
     }
+
     while (lng < -180) {
       lng += 360
     }
-    result.push({ lat, lng })
+
+    result.push({
+      lat,
+      lng
+    })
   })
 
   return result
@@ -346,6 +367,7 @@ const antimeridianCrossing = (latlng0, latlng1) => {
     Coordinate.fromLatLng(latlng0),
     Coordinate.fromLatLng(latlng1)
   )
+
   return __guard__(arc.antimeridianCrossing(), (x) => x.toLatLng())
 }
 
@@ -404,6 +426,7 @@ export const dividePolygon = (latlngs) => {
     newLatLngs.slice(1).forEach((hole) => {
       holes.push(makeCounterClockwise(convertLatLngs(hole)))
     })
+
     // eslint-disable-next-line prefer-destructuring
     newLatLngs = newLatLngs[0]
   }
@@ -449,6 +472,7 @@ export const dividePolygon = (latlngs) => {
       ({
         lat
       } = crossing)
+
       if (latlng1.lng < latlng2.lng) {
         extras = [
           [lat, -180],
@@ -478,7 +502,6 @@ export const dividePolygon = (latlngs) => {
       ]
     }
 
-    // for (const extra of extras) {
     // eslint-disable-next-line no-loop-func
     extras.forEach((extra) => {
       [lat, lng] = Array.from(extra)
@@ -502,6 +525,7 @@ export const dividePolygon = (latlngs) => {
       while (Math.abs(split[0].lng) !== 180) {
         split.push(split.shift())
       }
+
       split.push(split.shift())
     }
   }
@@ -546,6 +570,7 @@ export const dividePolygon = (latlngs) => {
         ({
           lng
         } = latlng)
+
         inc = lng < 0 ? 90 : -90
         for (i = 0; i <= 4; i += 1) {
           interior.push(latLng([-90, lng + (i * inc)]))
@@ -576,11 +601,12 @@ export const dividePolygon = (latlngs) => {
   if (boundary.length > 0) {
     boundaries.push(boundary)
   }
+
   if (interior.length > 0) {
     interiors.push(interior)
   }
-  // for (interior of interiorStack) {
-  interiorStack.forEach((interior) => interiors.push(interior))
+
+  interiorStack.forEach((interiorItem) => interiors.push(interiorItem))
 
   // Special case: If we contain both poles but do not have an edge crossing the meridian
   // as dealt with above, reverse our drawing.
@@ -589,9 +615,11 @@ export const dividePolygon = (latlngs) => {
     for (i = 0; i <= 4; i += 1) {
       interior.push(latLng([90, -180 + (i * 90)]))
     }
+
     for (i = 0; i <= 4; i += 1) {
       interior.push(latLng([-90, 180 - (i * 90)]))
     }
+
     interiors.unshift(interior)
   }
 
