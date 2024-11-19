@@ -200,7 +200,7 @@ const setPrecision = (mbr, precision) => {
 
 /**
  * Finds the minimum bounding rectangle for the given spatial coordinates.
- * @param {Object} spatial Spatial object containing boundingBox, circle, point or polygon spatial.
+ * @param {Object} spatial Spatial object containing boundingBox, circle, line, point or polygon spatial.
  * @param {MBROptions} options Options for creating the MBR.
  * @returns {Object} { swLat, swLng, neLat, neLng }
  */
