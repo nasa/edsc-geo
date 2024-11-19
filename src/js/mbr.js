@@ -174,28 +174,65 @@ const getLatRadius = (radius) => (radius / CIRCUMFERENCE) * 360
 // Find the difference in longitude for the circle radius
 const getLngRadius = (lat, radius) => getLatRadius(radius) / Math.cos((Math.PI / 180) * lat)
 
+// Set the precision of the MBR
+const setPrecision = (mbr, precision) => {
+  if (!precision) return mbr
+
+  const {
+    swLat,
+    swLng,
+    neLat,
+    neLng
+  } = mbr
+
+  return {
+    swLat: parseFloat(swLat.toFixed(precision)),
+    swLng: parseFloat(swLng.toFixed(precision)),
+    neLat: parseFloat(neLat.toFixed(precision)),
+    neLng: parseFloat(neLng.toFixed(precision))
+  }
+}
+
 /**
- * Finds the minimum bounding rectangle for the given spatial coordinates
- * @param {Object} spatial Spatial object containing boundingBox, circle, point or polygon spatial
+ * @typedef {Object} MBROptions
+ * @property {Number} [precision] An optional parameter to set the number of decimal places for each value in the MBR.
+ */
+
+/**
+ * Finds the minimum bounding rectangle for the given spatial coordinates.
+ * @param {Object} spatial Spatial object containing boundingBox, circle, point or polygon spatial.
+ * @param {MBROptions} options Options for creating the MBR.
  * @returns {Object} { swLat, swLng, neLat, neLng }
  */
-export const mbr = (spatial) => {
+export const mbr = (spatial, options = {}) => {
   const {
     boundingBox,
     circle,
+    line,
     point,
     polygon
   } = spatial
 
+  const {
+    precision
+  } = options
+
   if (point) {
     const { lat, lng } = getShape([point])[0]
 
-    return {
-      swLat: lat - EPSILON,
-      swLng: lng - EPSILON,
-      neLat: lat + EPSILON,
-      neLng: lng + EPSILON
+    let epsilonValue = EPSILON
+
+    // If precision is set, calculate the epsilon value based on the precision
+    if (precision) {
+      epsilonValue = 1 / 10 ** precision
     }
+
+    return setPrecision({
+      swLat: lat - epsilonValue,
+      swLng: lng - epsilonValue,
+      neLat: lat + epsilonValue,
+      neLng: lng + epsilonValue
+    }, precision)
   }
 
   if (circle) {
@@ -213,24 +250,37 @@ export const mbr = (spatial) => {
     const neLat = lat + latRadius
     const neLng = lng + lngRadius
 
-    return {
+    return setPrecision({
       swLat,
       swLng,
       neLat,
       neLng
-    }
+    }, precision)
+  }
+
+  if (line) {
+    const points = splitListOfPoints(line)
+    const latLngPoints = getShape(points)
+    const [minLat, minLng, maxLat, maxLng] = findSimpleMbr(latLngPoints)
+
+    return setPrecision({
+      swLat: minLat,
+      swLng: minLng,
+      neLat: maxLat,
+      neLng: maxLng
+    }, precision)
   }
 
   if (boundingBox) {
     const points = splitListOfPoints(boundingBox)
     const [sw, ne] = getShape(points)
 
-    return {
+    return setPrecision({
       swLat: sw.lat,
       swLng: sw.lng,
       neLat: ne.lat,
       neLng: ne.lng
-    }
+    }, precision)
   }
 
   if (polygon) {
@@ -240,7 +290,7 @@ export const mbr = (spatial) => {
     const { interiors } = dividePolygon(getShape(points))
     const mbrs = (interiors.map((lls) => findSimpleMbr(lls)))
 
-    return mergeMbrs(mbrs)
+    return setPrecision(mergeMbrs(mbrs), precision)
   }
 
   return undefined
