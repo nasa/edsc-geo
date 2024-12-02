@@ -1,6 +1,6 @@
 {
   "name": "@edsc/geo-utils",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Geographical utilities used by Earthdata Search",
   "main": "./dist/js/index.js",
   "scripts": {
@@ -19,8 +19,8 @@
     "edsc"
   ],
   "author": {
-    "name": "Patrick Quinn",
-    "email": "patrick@element84.com"
+    "name": "Earthdata Search",
+    "email": "support@earthdata.nasa.gov"
   },
   "license": "Apache-2.0",
   "bugs": {
