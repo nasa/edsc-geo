@@ -212,11 +212,6 @@ const containsPole = (latlngs) => {
 
   delta *= RAD_TO_DEG
 
-  if (delta < (-360 + EPSILON)) {
-    // eslint-disable-next-line no-bitwise
-    return NORTH_POLE | SOUTH_POLE
-  }
-
   if (delta < EPSILON) {
     const angles = ((() => {
       const result1 = []
@@ -484,19 +479,19 @@ export const dividePolygon = (latlngs) => {
           [lat, -180]
         ]
       }
-    } else if ((latlng1.lng === 180) && (latlng2.lng < 0)) {
+    } else if ((latlng1.lng === 180) && (latlng2.lng < 0 && latlng2.lng !== -180)) {
       extras = [
         [latlng1.lat, -180]
       ]
-    } else if ((latlng1.lng === -180) && (latlng2.lng > 0)) {
+    } else if ((latlng1.lng === -180) && (latlng2.lng > 0 && latlng2.lng !== 180)) {
       extras = [
         [latlng1.lat, 180]
       ]
-    } else if ((latlng2.lng === 180) && (latlng1.lng < 0)) {
+    } else if ((latlng2.lng === 180) && (latlng1.lng < 0 && latlng1.lng !== -180)) {
       extras = [
         [latlng2.lat, -180]
       ]
-    } else if ((latlng2.lng === -180) && (latlng1.lng > 0)) {
+    } else if ((latlng2.lng === -180) && (latlng1.lng > 0 && latlng1.lng !== 180)) {
       extras = [
         [latlng2.lat, 180]
       ]

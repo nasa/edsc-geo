@@ -109,6 +109,84 @@ describe('geo#dividePolygon', () => {
       ]
     })
   })
+
+  test('returns the boundaries and interiors of the polygon that touches but does cross the antimeridian', () => {
+    const polygon = [
+      {
+        lng: -180,
+        lat: 16.6
+      },
+      {
+        lng: 180,
+        lat: 16.6
+      },
+      {
+        lng: 180,
+        lat: 61.5
+      },
+      {
+        lng: -180,
+        lat: 61.5
+      },
+      {
+        lng: -180,
+        lat: 16.6
+      }
+    ]
+
+    const result = dividePolygon(polygon)
+
+    expect(result).toEqual({
+      interiors: [
+        [
+          {
+            lat: 16.6,
+            lng: -180
+          },
+          {
+            lat: 16.6,
+            lng: 180
+          },
+          {
+            lat: 61.5,
+            lng: 180
+          },
+          {
+            lat: 61.5,
+            lng: -180
+          },
+          {
+            lat: 16.6,
+            lng: -180
+          }
+        ]
+      ],
+      boundaries: [
+        [
+          {
+            lat: 16.6,
+            lng: -180
+          },
+          {
+            lat: 16.6,
+            lng: 180
+          },
+          {
+            lat: 61.5,
+            lng: 180
+          },
+          {
+            lat: 61.5,
+            lng: -180
+          },
+          {
+            lat: 16.6,
+            lng: -180
+          }
+        ]
+      ]
+    })
+  })
 })
 
 describe('geo#calculateArea', () => {
